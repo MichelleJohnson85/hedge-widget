@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Hedge Witch Daily Affirmation</title>
+<style>
+body {
+  background-color: #0b0d0c;
+  color: #e6e2d6;
+  font-family: Georgia, serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  text-align: center;
+}
+.affirmation {
+  font-size: 1.2em;
+  padding: 24px;
+  line-height: 1.6;
+}
+</style>
+</head>
+<body>
+
+<div class="affirmation" id="affirmation"></div>
+
+<script>
+const affirmations = [
+  "I walk safely between worlds",
+  "The hedge opens only when I am ready",
+  "My intuition is ancient and clear",
+  "Roots below, stars above, I am held",
+  "The spirits speak softly and I listen",
+  "My magic is quiet, steady, and real",
+  "I cross thresholds protected and grounded"
+];
+
+const today = new Date().getDate();
+document.getElementById("affirmation").innerText =
+  affirmations[today % affirmations.length];
+</script>
+
+</body>
+</html>
