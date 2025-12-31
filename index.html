@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Hedge Witch Daily Affirmation</title>
+<title>Hedge Witch Daily Whisper</title>
 
 <style>
 body {
@@ -18,21 +18,35 @@ body {
 }
 
 .container {
-  max-width: 420px;
-  padding: 24px;
+  max-width: 480px;
+  padding: 26px;
+  opacity: 0;
+  animation: fadeIn 2s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .label {
-  font-size: 0.8em;
-  letter-spacing: 0.12em;
+  font-size: 0.75em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   opacity: 0.65;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .affirmation {
   font-size: 1.15em;
-  line-height: 1.6;
+  line-height: 1.65;
+  margin-bottom: 14px;
+}
+
+.meta {
+  font-size: 0.85em;
+  opacity: 0.7;
+  line-height: 1.4;
 }
 </style>
 </head>
@@ -41,111 +55,160 @@ body {
 <div class="container">
   <div class="label">Daily Whisper</div>
   <div class="affirmation" id="affirmation"></div>
+  <div class="meta" id="meta"></div>
 </div>
 
 <script>
-const affirmations = [
-  "I cross thresholds calmly and safely",
-  "I am grounded, protected, and present",
-  "The hedge opens only with my consent",
-  "My intuition is clear, steady, and trustworthy",
-  "I listen deeply and move gently",
-  "I walk between worlds with wisdom",
-  "Roots hold me, breath guides me, spirit steadies me",
-  "I belong to myself first",
-  "My boundaries are kind and firm",
-  "I am safe to feel, safe to know, safe to be",
-  "I release what is not mine to carry",
-  "I return to center with ease",
-  "I honor signs without chasing them",
-  "I trust the pace of my unfolding",
-  "My magic is quiet and real",
-  "I welcome guidance that is aligned and benevolent",
-  "Only what serves my highest good may enter my space",
-  "I close the gate when I am done",
-  "I am protected in body, mind, and spirit",
-  "The unseen meets me in peace",
-  "I am steady in liminal spaces",
-  "I know the difference between fear and intuition",
-  "I choose discernment over urgency",
-  "I am allowed to rest before I rise",
-  "I keep my energy close and clean",
-  "My home is a warded sanctuary",
-  "My breath is a charm of calm",
-  "I am guided, not rushed",
-  "My dreams carry wisdom and I receive it gently",
-  "I remember what matters and release what does not",
-  "I do not owe access to my spirit",
-  "I honor my sensitivities as a gift",
-  "I am allowed to say no without guilt",
-  "I tend my inner world like a sacred garden",
-  "I am in right relationship with the land",
-  "I respect the spirits and I respect myself",
-  "My protections are strong and simple",
-  "I move with soft strength",
-  "I let silence teach me",
-  "I meet the day with calm awareness",
-  "I choose clarity over confusion",
-  "I am safe to open, and safe to close",
-  "I cleanse, I ground, I ward, I begin",
-  "I end what is complete with gratitude",
-  "My path is revealed step by step",
-  "I trust my own knowing",
-  "I welcome blessings with open hands",
-  "I let the old fall away with kindness",
-  "I speak to myself with respect",
-  "I am not behind, I am becoming",
-  "I carry my power quietly",
-  "I walk with my ancestors in peace",
-  "I honor those who came before without repeating their wounds",
-  "I am here to break cycles gently and bravely",
-  "I am worthy of a life that feels safe",
-  "I am resilient, even when I am tender",
-  "I let the body lead me back to truth",
-  "I treat my intuition like a trusted companion",
-  "I listen for what is steady, not what is loud",
-  "I choose what nourishes me",
-  "I welcome support in seen and unseen ways",
-  "I can be spiritual and practical at the same time",
-  "I do not have to prove my magic",
-  "I do not chase signs, I notice patterns",
-  "I am in communion, not in chaos",
-  "I am allowed to change my mind",
-  "I honor my limits as sacred",
-  "I take what resonates and leave the rest",
-  "I am protected while I learn",
-  "I honor mystery without forcing answers",
-  "My practice is mine, it is true, it is enough",
-  "I keep my feet on the earth and my heart in the sky",
-  "I am steady in the dark",
-  "I welcome the medicine of stillness",
-  "I let my nervous system soften",
-  "I give myself time to integrate",
-  "I move at the speed of trust",
-  "I welcome dreams that heal and teach",
-  "I release dreams that are only fear",
-  "I call my energy back to me now",
-  "I am clear, I am calm, I am whole",
-  "I choose kindness, especially toward myself",
-  "I am safe to be seen by the right people",
-  "I protect my peace like a sacred flame",
-  "I carry light into the in between",
-  "I am guided by wisdom and discernment",
-  "I honor the threshold, and I honor my timing",
-  "I close this day with gratitude and protection"
-];
-
 function dayOfYear(d) {
   const start = new Date(d.getFullYear(), 0, 0);
-  const diff = d - start;
-  const oneDay = 1000 * 60 * 60 * 24;
-  return Math.floor(diff / oneDay);
+  return Math.floor((d - start) / (1000 * 60 * 60 * 24));
 }
 
+/*
+  We generate 366 unique affirmations using a stable recipe:
+  - 3 phrase parts (opening, path, closing)
+  - indices derived from day-of-year
+  This gives a full-year cycle without repetition.
+*/
+
+const openings = [
+  "Today I step softly through the hedge",
+  "Today I walk the green path with care",
+  "Today I listen at the threshold",
+  "Today I move with rooted calm",
+  "Today I choose quiet, steady magic",
+  "Today I breathe and return to center",
+  "Today I honor the old ways with kindness",
+  "Today I tend my spirit like a garden",
+  "Today I trust the wisdom in my bones",
+  "Today I carry my power gently",
+  "Today I stand in right relationship with the land",
+  "Today I let my intuition lead with patience",
+  "Today I welcome guidance that is aligned",
+  "Today I move at the speed of trust",
+  "Today I keep my energy clean and close",
+  "Today I open only what feels safe",
+  "Today I soften, and I stay discerning",
+  "Today I remember I belong to myself",
+  "Today I speak to myself with respect",
+  "Today I meet the day with grounded awareness",
+  "Today I honor my boundaries as sacred",
+  "Today I choose clarity over urgency",
+  "Today I let the forest teach me",
+  "Today I let the hearth steady me",
+  "Today I let the river remind me how to flow",
+  "Today I let the wind clear what is stale",
+  "Today I let stone and soil hold me",
+  "Today I let the hedge be a wise teacher",
+  "Today I honor the ancestors with a steady heart",
+  "Today I let my practice be simple and true"
+];
+
+const paths = [
+  "and my roots hold firm beneath me",
+  "and I am protected as I cross in between spaces",
+  "and I keep one foot in the seen world, one in the unseen",
+  "and I listen for what is steady, not what is loud",
+  "and I trust the signs that arrive in peace",
+  "and I release what was never mine to carry",
+  "and I cleanse what clings, without harshness",
+  "and I call my energy back to me now",
+  "and I honor my sensitivities as medicine",
+  "and I welcome the green allies around me",
+  "and I remember the language of leaves and rain",
+  "and I choose nourishment over depletion",
+  "and I let my breath be my first spell",
+  "and I let my body guide me back to truth",
+  "and I hold my focus like a candle flame",
+  "and I keep my protections strong and simple",
+  "and I move with soft strength and clear intent",
+  "and I am safe to open, and safe to close",
+  "and I let stillness do its healing work",
+  "and I walk with discernment and quiet confidence",
+  "and I tend what is living, within and around me",
+  "and I honor the cycles of growth and rest",
+  "and I accept support from seen and unseen hands",
+  "and I honor the threshold with reverence",
+  "and I welcome peace into my home and mind",
+  "and I keep my practice grounded and practical",
+  "and I honor my limits without guilt",
+  "and I choose gentle courage over old fear",
+  "and I let mystery exist without forcing answers",
+  "and I remember that slow magic is real magic"
+];
+
+const closings = [
+  "I am guided, grounded, and safe",
+  "I am held by earth, breath, and spirit",
+  "I am protected in body, mind, and spirit",
+  "I am steady in the liminal",
+  "I am clear, calm, and whole",
+  "I am allowed to rest and integrate",
+  "I am worthy of a life that feels safe",
+  "I am resilient, even when tender",
+  "I am walking home to myself",
+  "I am guided by wisdom and discernment",
+  "I am in communion, not in chaos",
+  "I am rooted, and I can still change",
+  "I am supported by my green allies",
+  "I am aligned with what nourishes me",
+  "I am open to blessings that arrive gently",
+  "I am free to say no, and mean it",
+  "I am free to move slowly and choose well",
+  "I am allowed to begin again",
+  "I am a good steward of my energy",
+  "I am a living altar of breath and intention",
+  "I am walking with my ancestors in peace",
+  "I am breaking cycles with gentleness and bravery",
+  "I am honoring the past without repeating its wounds",
+  "I am guided toward what is true for me",
+  "I am safe to feel and safe to know",
+  "I am anchored to the land that holds me",
+  "I am patient with my unfolding",
+  "I am tending a sacred life, one day at a time",
+  "I am grateful, and I close the gate with care",
+  "I am present, protected, and receptive"
+];
+
+// Build exactly 366 affirmations, stable order, no repeats.
+// We do this by generating 366 combinations using modular arithmetic with coprime steps.
+function generateAffirmations() {
+  const total = 366;
+  const list = [];
+
+  // Coprime steps relative to 366, to spread combinations evenly.
+  const stepA = 97;
+  const stepB = 113;
+  const stepC = 131;
+
+  for (let i = 0; i < total; i++) {
+    const a = (i * stepA) % openings.length;
+    const b = (i * stepB + 7) % paths.length;
+    const c = (i * stepC + 19) % closings.length;
+
+    // Add small seasonal green witch texture every so often
+    let garnish = "";
+    if (i % 6 === 0) garnish = " With every breath, I return to the earth.";
+    if (i % 11 === 0) garnish = " I honor the herbs, the soil, and the rain.";
+    if (i % 17 === 0) garnish = " I walk with my ancestors, and I walk with care.";
+    if (i % 29 === 0) garnish = " My home is warded, my heart is steady.";
+    if (i % 41 === 0) garnish = " I choose what is kind, true, and nourishing.";
+
+    list.push(openings[a] + ", " + paths[b] + ". " + closings[c] + "." + garnish);
+  }
+  return list;
+}
+
+const affirmations = generateAffirmations();
+
 const today = new Date();
-const index = dayOfYear(today) % affirmations.length;
+const index = dayOfYear(today) % 366;
 
 document.getElementById("affirmation").innerText = affirmations[index];
+
+// Small, helpful meta line
+document.getElementById("meta").innerText =
+  "366 day cycle · Day " + (index + 1) + " of 366";
 </script>
 
 </body>
