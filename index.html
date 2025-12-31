@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Hedge Witch Daily Affirmation</title>
+
 <style>
 body {
   background-color: #0b0d0c;
@@ -15,31 +16,136 @@ body {
   margin: 0;
   text-align: center;
 }
-.affirmation {
-  font-size: 1.2em;
+
+.container {
+  max-width: 420px;
   padding: 24px;
+}
+
+.label {
+  font-size: 0.8em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.65;
+  margin-bottom: 14px;
+}
+
+.affirmation {
+  font-size: 1.15em;
   line-height: 1.6;
 }
 </style>
 </head>
-<body>
 
-<div class="affirmation" id="affirmation"></div>
+<body>
+<div class="container">
+  <div class="label">Daily Whisper</div>
+  <div class="affirmation" id="affirmation"></div>
+</div>
 
 <script>
 const affirmations = [
-  "I walk safely between worlds",
-  "The hedge opens only when I am ready",
-  "My intuition is ancient and clear",
-  "Roots below, stars above, I am held",
-  "The spirits speak softly and I listen",
-  "My magic is quiet, steady, and real",
-  "I cross thresholds protected and grounded"
+  "I cross thresholds calmly and safely",
+  "I am grounded, protected, and present",
+  "The hedge opens only with my consent",
+  "My intuition is clear, steady, and trustworthy",
+  "I listen deeply and move gently",
+  "I walk between worlds with wisdom",
+  "Roots hold me, breath guides me, spirit steadies me",
+  "I belong to myself first",
+  "My boundaries are kind and firm",
+  "I am safe to feel, safe to know, safe to be",
+  "I release what is not mine to carry",
+  "I return to center with ease",
+  "I honor signs without chasing them",
+  "I trust the pace of my unfolding",
+  "My magic is quiet and real",
+  "I welcome guidance that is aligned and benevolent",
+  "Only what serves my highest good may enter my space",
+  "I close the gate when I am done",
+  "I am protected in body, mind, and spirit",
+  "The unseen meets me in peace",
+  "I am steady in liminal spaces",
+  "I know the difference between fear and intuition",
+  "I choose discernment over urgency",
+  "I am allowed to rest before I rise",
+  "I keep my energy close and clean",
+  "My home is a warded sanctuary",
+  "My breath is a charm of calm",
+  "I am guided, not rushed",
+  "My dreams carry wisdom and I receive it gently",
+  "I remember what matters and release what does not",
+  "I do not owe access to my spirit",
+  "I honor my sensitivities as a gift",
+  "I am allowed to say no without guilt",
+  "I tend my inner world like a sacred garden",
+  "I am in right relationship with the land",
+  "I respect the spirits and I respect myself",
+  "My protections are strong and simple",
+  "I move with soft strength",
+  "I let silence teach me",
+  "I meet the day with calm awareness",
+  "I choose clarity over confusion",
+  "I am safe to open, and safe to close",
+  "I cleanse, I ground, I ward, I begin",
+  "I end what is complete with gratitude",
+  "My path is revealed step by step",
+  "I trust my own knowing",
+  "I welcome blessings with open hands",
+  "I let the old fall away with kindness",
+  "I speak to myself with respect",
+  "I am not behind, I am becoming",
+  "I carry my power quietly",
+  "I walk with my ancestors in peace",
+  "I honor those who came before without repeating their wounds",
+  "I am here to break cycles gently and bravely",
+  "I am worthy of a life that feels safe",
+  "I am resilient, even when I am tender",
+  "I let the body lead me back to truth",
+  "I treat my intuition like a trusted companion",
+  "I listen for what is steady, not what is loud",
+  "I choose what nourishes me",
+  "I welcome support in seen and unseen ways",
+  "I can be spiritual and practical at the same time",
+  "I do not have to prove my magic",
+  "I do not chase signs, I notice patterns",
+  "I am in communion, not in chaos",
+  "I am allowed to change my mind",
+  "I honor my limits as sacred",
+  "I take what resonates and leave the rest",
+  "I am protected while I learn",
+  "I honor mystery without forcing answers",
+  "My practice is mine, it is true, it is enough",
+  "I keep my feet on the earth and my heart in the sky",
+  "I am steady in the dark",
+  "I welcome the medicine of stillness",
+  "I let my nervous system soften",
+  "I give myself time to integrate",
+  "I move at the speed of trust",
+  "I welcome dreams that heal and teach",
+  "I release dreams that are only fear",
+  "I call my energy back to me now",
+  "I am clear, I am calm, I am whole",
+  "I choose kindness, especially toward myself",
+  "I am safe to be seen by the right people",
+  "I protect my peace like a sacred flame",
+  "I carry light into the in between",
+  "I am guided by wisdom and discernment",
+  "I honor the threshold, and I honor my timing",
+  "I close this day with gratitude and protection"
 ];
 
-const today = new Date().getDate();
-document.getElementById("affirmation").innerText =
-  affirmations[today % affirmations.length];
+function dayOfYear(d) {
+  const start = new Date(d.getFullYear(), 0, 0);
+  const diff = d - start;
+  const oneDay = 1000 * 60 * 60 * 24;
+  return Math.floor(diff / oneDay);
+}
+
+const today = new Date();
+const index = dayOfYear(today) % affirmations.length;
+
+document.getElementById("affirmation").innerText = affirmations[index];
 </script>
 
 </body>
